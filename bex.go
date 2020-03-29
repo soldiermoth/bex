@@ -10,14 +10,17 @@ import (
 )
 
 func main() {
+	if len(os.Args) > 1 {
+		log.Fatal("Too many arguments")
+	}
 	var (
 		d = xml.NewDecoder(os.Stdin)
-		e = xml.NewEncoder(os.Stdout)
 	)
-	e.Indent("", "  ")
-	if err := bex.Encode(d, e); err != nil {
+	if len(os.Args) == 1 {
+
+	}
+	if err := bex.Encode(d, os.Stdout); err != nil {
 		log.Fatal(err)
 	}
-	e.Flush()
 	fmt.Fprintln(os.Stdout)
 }
