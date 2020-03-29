@@ -15,8 +15,8 @@ const (
 
 // Control the color of xml types
 var (
-	Element = NewColorizer(Blue)
-	Attr    = NewColorizer(Red)
+	Element = NewColorizer(LightBlue)
+	Attr    = NewColorizer(LightRed)
 	Comment = NewColorizer(Yellow)
 )
 

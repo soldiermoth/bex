@@ -16,6 +16,21 @@ const (
 	Green
 	Yellow
 	Blue
+	Magenta
+	Cyan
+	LightGray
+)
+
+// Color codes
+const (
+	DarkGray Color = iota + 90
+	LightRed
+	LightGreen
+	LightYellow
+	LightBlue
+	LightMagenta
+	LightCyan
+	White
 )
 
 // Color wraps the int value for a color
