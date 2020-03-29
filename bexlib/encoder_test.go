@@ -1,4 +1,4 @@
-package bex_test
+package bexlib_test
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/soldiermoth/bex/bex"
+	"github.com/soldiermoth/bex/bexlib"
 )
 
 func BenchmarkEncoder(b *testing.B) {
@@ -17,7 +17,7 @@ func BenchmarkEncoder(b *testing.B) {
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		dec := xml.NewDecoder(bytes.NewReader(fixture))
-		err := bex.Encode(dec, ioutil.Discard)
+		err := bexlib.Encode(dec, ioutil.Discard)
 		if err != nil {
 			b.Fatalf("problem running Encode %q", err)
 		}

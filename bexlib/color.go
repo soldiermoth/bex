@@ -1,4 +1,4 @@
-package bex
+package bexlib
 
 import (
 	"strconv"

@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/soldiermoth/bex/bex"
+	"github.com/soldiermoth/bex/bexlib"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	if len(os.Args) == 1 {
 
 	}
-	if err := bex.Encode(d, os.Stdout); err != nil {
+	if err := bexlib.Encode(d, os.Stdout); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Fprintln(os.Stdout)
