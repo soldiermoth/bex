@@ -1,0 +1,38 @@
+<!-- Comment Root -->
+<Root id="root" xmlns:xs="http://example.com/example">
+    <!-- One  -->
+    <One id="1">
+        <Two id="2">
+            <TwoA id="2a">two-a</TwoA>
+            <TwoB>two-b</TwoB>
+            <TwoC attr1="1" attr2="num">
+                <![CDATA[ 42.00 ]]>
+            </TwoC>
+            <TwoD>http://example.com/twod</TwoD>
+            <TwoE id="2e">http://example.com/twoe</TwoE>
+            <TwoF>
+                <TwoFA id="42" attr="5">
+                    <Video>
+                        <Duration>00:10:42</Duration>
+                        <URLs>
+                            <URL kind="home">http://example.com/home</URL>
+                            <URL kind="media">http://example.com/media</URL>
+                        </URLs>
+                        <Links>
+                            <Blog id="example">
+                                <![CDATA[https://example.com]]>
+                            </Blog>
+                        </Links>
+                        <Videos>
+                            <Video id="42" type="application/x-mpegURL" bitrate="4200" width="1920" height="1080" codec="h264">
+                                <![CDATA[https://example.com/content/test.m3u8]]>
+                            </Video>
+                        </Videos>
+
+
+                    </Video>
+                </TwoFA>
+            </TwoF>
+        </Two>
+    </One>
+</Root>
