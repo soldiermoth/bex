@@ -3,6 +3,7 @@ package bexlib
 import (
 	"bytes"
 	"encoding/xml"
+	"io"
 )
 
 // Encoder wraps xml.Encoder
@@ -10,9 +11,24 @@ import (
 // * padding around comments
 // * padding around char data
 type Encoder struct {
+	ColorElement, ColorAttr, ColorComment Colorizer
+	AttrsBeforePad                        int
 	// internal tracking data
 	state state
 	enc   *xml.Encoder
+}
+
+// NewEncoder creates a new encoder with some sensible defaults
+func NewEncoder(out io.Writer) *Encoder {
+	enc := &Encoder{
+		ColorElement:   DefaultColorElement,
+		ColorAttr:      DefaultColorAttr,
+		ColorComment:   DefaultColorComment,
+		AttrsBeforePad: DefaultAttrsBeforePad,
+		enc:            xml.NewEncoder(out),
+	}
+	enc.Indent("", DefaultIndent)
+	return enc
 }
 
 // Indent adds an indent to the encoder
@@ -21,6 +37,9 @@ func (e *Encoder) Indent(prefix, indent string) {
 	e.enc.Indent(prefix, indent)
 }
 
+// Flush wraps underlying encoder's Flush
+func (e *Encoder) Flush() error { return e.enc.Flush() }
+
 func (e *Encoder) start(t xml.StartElement) {
 	if e.state.begun && !e.state.begunNodes {
 		e.string("\n")
@@ -28,9 +47,9 @@ func (e *Encoder) start(t xml.StartElement) {
 	e.state.begunNodes = true
 	e.state.depth++
 	e.state.directParent = &t
-	t.Name.Local = Element.S(t.Name.Local)
+	t.Name.Local = e.ColorElement.S(t.Name.Local)
 	for i, a := range t.Attr {
-		t.Attr[i].Name.Local = Attr.S(a.Name.Local)
+		t.Attr[i].Name.Local = e.ColorAttr.S(a.Name.Local)
 	}
 	e.token(t)
 }
@@ -38,12 +57,12 @@ func (e *Encoder) start(t xml.StartElement) {
 func (e *Encoder) end(t xml.EndElement) {
 	e.state.depth--
 	e.state.directParent = nil
-	t.Name.Local = Element.S(t.Name.Local)
+	t.Name.Local = e.ColorElement.S(t.Name.Local)
 	e.token(t)
 }
 
 func (e *Encoder) comment(t xml.Comment) {
-	t = Comment.B(t)
+	t = e.ColorComment.B(t)
 	if e.state.begun {
 		e.string("\n")
 	}
@@ -56,7 +75,7 @@ func (e *Encoder) chardata(t xml.CharData) {
 	if len(t) == 0 {
 		return
 	}
-	if p := e.state.directParent; p != nil && len(p.Attr) > AttrsBeforePad {
+	if p := e.state.directParent; p != nil && len(p.Attr) > e.AttrsBeforePad {
 		e.string("\n")
 		e.padding(e.state.depth)
 		defer e.padding(e.state.depth - 1)

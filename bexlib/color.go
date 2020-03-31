@@ -1,7 +1,9 @@
 package bexlib
 
 import (
+	"fmt"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -33,8 +35,38 @@ const (
 	White
 )
 
+var (
+	colorNames = map[string]Color{
+		"black":         Black,
+		"red":           Red,
+		"green":         Green,
+		"yellow":        Yellow,
+		"blue":          Blue,
+		"magenta":       Magenta,
+		"cyan":          Cyan,
+		"light-gray":    LightGray,
+		"dark-gray":     DarkGray,
+		"light-red":     LightRed,
+		"light-green":   LightGreen,
+		"light-yellow":  LightYellow,
+		"light-blue":    LightBlue,
+		"light-magenta": LightMagenta,
+		"light-cyan":    LightCyan,
+		"white":         White,
+	}
+)
+
 // Color wraps the int value for a color
 type Color int
+
+// ParseColor takes a string & converts to a Color
+func ParseColor(s string) (Color, error) {
+	s = strings.ToLower(s)
+	if c, ok := colorNames[s]; ok {
+		return c, nil
+	}
+	return Black, fmt.Errorf("No color found for %q", s)
+}
 
 // Control outputs the color's control code
 func (c Color) Control() string { return "\x1b[0;" + strconv.Itoa(int(c)) + "m" }

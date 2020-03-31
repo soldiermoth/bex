@@ -17,7 +17,8 @@ func BenchmarkEncoder(b *testing.B) {
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		dec := xml.NewDecoder(bytes.NewReader(fixture))
-		err := bexlib.Encode(dec, ioutil.Discard)
+		enc := bexlib.NewEncoder(ioutil.Discard)
+		err := bexlib.Pipe(dec, enc)
 		if err != nil {
 			b.Fatalf("problem running Encode %q", err)
 		}
