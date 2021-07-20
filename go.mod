@@ -1,3 +1,3 @@
 module github.com/soldiermoth/bex
 
-go 1.16
+go 1.13
